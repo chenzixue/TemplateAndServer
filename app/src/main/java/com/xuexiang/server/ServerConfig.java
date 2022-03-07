@@ -34,7 +34,7 @@ public final class ServerConfig {
     /**
      * web页面服务资源的加载路径
      */
-    public static final String WEB_ASSENTS = "/web";
+    public static final String WEB_ASSENTS = "/web/";
 
     /**
      * 服务器端口

@@ -17,12 +17,14 @@
 
 package com.xuexiang.templateandserver.core;
 
+import static com.xuexiang.templateandserver.core.SimpleListAdapter.KEY_SUB_TITLE;
+import static com.xuexiang.templateandserver.core.SimpleListAdapter.KEY_TITLE;
+
 import android.content.res.Configuration;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 
-import com.umeng.analytics.MobclickAgent;
 import com.xuexiang.xaop.annotation.SingleClick;
 import com.xuexiang.xpage.base.XPageContainerListFragment;
 import com.xuexiang.xui.widget.actionbar.TitleBar;
@@ -32,9 +34,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static com.xuexiang.templateandserver.core.SimpleListAdapter.KEY_SUB_TITLE;
-import static com.xuexiang.templateandserver.core.SimpleListAdapter.KEY_TITLE;
 
 /**
  * 修改列表样式为主副标题显示
@@ -112,12 +111,10 @@ public abstract class BaseContainerFragment extends XPageContainerListFragment {
     @Override
     public void onResume() {
         super.onResume();
-        MobclickAgent.onPageStart(getPageName());
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        MobclickAgent.onPageEnd(getPageName());
     }
 }

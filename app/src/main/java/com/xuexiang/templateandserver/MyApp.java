@@ -22,7 +22,6 @@ import android.content.Context;
 
 import androidx.multidex.MultiDex;
 
-import com.xuexiang.templateandserver.utils.sdkinit.UMengInit;
 import com.xuexiang.templateandserver.utils.sdkinit.XBasicLibInit;
 import com.xuexiang.xormlite.annotation.DataBase;
 import com.xuexiang.xormlite.enums.DataBaseType;
@@ -52,7 +51,6 @@ public class MyApp extends Application {
      */
     private void initLibs() {
         XBasicLibInit.init(this);
-        UMengInit.init(this);
     }
 
 
