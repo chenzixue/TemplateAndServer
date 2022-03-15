@@ -17,27 +17,24 @@
 
 package com.xuexiang.templateandserver.fragment.manage;
 
+import static android.app.Activity.RESULT_OK;
+
 import android.view.View;
 
 import com.xuexiang.server.model.User;
+import com.xuexiang.server.model.UserDao;
+import com.xuexiang.templateandserver.App;
 import com.xuexiang.templateandserver.R;
 import com.xuexiang.templateandserver.core.BaseFragment;
 import com.xuexiang.templateandserver.utils.XToastUtils;
 import com.xuexiang.xaop.annotation.SingleClick;
-import com.xuexiang.xormlite.AndServerDataBaseRepository;
-import com.xuexiang.xormlite.db.DBService;
 import com.xuexiang.xpage.annotation.Page;
 import com.xuexiang.xui.widget.actionbar.TitleBar;
 import com.xuexiang.xui.widget.edittext.materialedittext.MaterialEditText;
 import com.xuexiang.xui.widget.spinner.materialspinner.MaterialSpinner;
 import com.xuexiang.xutil.common.StringUtils;
 
-import java.sql.SQLException;
-
 import butterknife.BindView;
-
-import static android.app.Activity.RESULT_OK;
-
 /**
  * @author xuexiang
  * @since 2020/9/5 5:11 PM
@@ -90,13 +87,10 @@ public class RegisterFragment extends BaseFragment {
                 .setPhone(etPhone.getEditValue());
 
 
-        if (saveUser(user)) {
-            XToastUtils.success("注册成功");
-            setFragmentResult(RESULT_OK, null);
-            popToBack();
-        } else {
-            XToastUtils.success("注册失败");
-        }
+        saveUser(user);
+        XToastUtils.success("注册成功");
+        setFragmentResult(RESULT_OK, null);
+        popToBack();
     }
 
     @Override
@@ -108,13 +102,8 @@ public class RegisterFragment extends BaseFragment {
         return etLoginName.validate() && etPassword.validate() && etAge.validate() && etPhone.validate();
     }
 
-    public boolean saveUser(User user) {
-        DBService<User> dbService = AndServerDataBaseRepository.getInstance().getDataBase(User.class);
-        try {
-            return dbService.insert(user) > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
+    public void saveUser(User user) {
+        UserDao userDao = App.getDaoSession().getUserDao();
+        userDao.insert(user);
     }
 }

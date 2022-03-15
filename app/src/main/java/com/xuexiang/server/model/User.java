@@ -1,7 +1,9 @@
 package com.xuexiang.server.model;
 
-import com.j256.ormlite.field.DatabaseField;
-import com.j256.ormlite.table.DatabaseTable;
+import org.greenrobot.greendao.annotation.Entity;
+import org.greenrobot.greendao.annotation.Generated;
+import org.greenrobot.greendao.annotation.Id;
+import org.greenrobot.greendao.annotation.Unique;
 
 /**
  * 用户数据库表
@@ -9,34 +11,46 @@ import com.j256.ormlite.table.DatabaseTable;
  * @author xuexiang
  * @since 2020/8/31 12:22 AM
  */
-@DatabaseTable(tableName = "User")
+@Entity
 public class User {
     public static final String KEY_ID = "Id";
     public static final String KEY_LOGIN_NAME = "loginName";
     public static final String KEY_PASSWORD = "password";
 
-    @DatabaseField(generatedId = true)
-    private long Id;
+    @Id(autoincrement = true)
+    @Unique
+    private Long Id;
 
-    @DatabaseField(unique = true)
+    @Unique
     private String loginName;
 
-    @DatabaseField
     private String password;
 
-    @DatabaseField
     private String name;
 
-    @DatabaseField
     private int gender;
 
-    @DatabaseField
     private int age;
 
-    @DatabaseField
     private String phone;
 
-    public long getId() {
+
+    public User() {
+    }
+
+    @Generated(hash = 397181959)
+    public User(Long Id, String loginName, String password, String name, int gender,
+            int age, String phone) {
+        this.Id = Id;
+        this.loginName = loginName;
+        this.password = password;
+        this.name = name;
+        this.gender = gender;
+        this.age = age;
+        this.phone = phone;
+    }
+
+    public Long getId() {
         return Id;
     }
 
@@ -120,5 +134,9 @@ public class User {
                 ", age=" + age +
                 ", phone='" + phone + '\'' +
                 '}';
+    }
+
+    public void setId(Long Id) {
+        this.Id = Id;
     }
 }

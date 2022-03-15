@@ -19,7 +19,7 @@ package com.xuexiang.templateandserver.utils.sdkinit;
 
 import android.app.Application;
 
-import com.xuexiang.templateandserver.MyApp;
+import com.xuexiang.templateandserver.App;
 import com.xuexiang.templateandserver.core.BaseActivity;
 import com.xuexiang.templateandserver.utils.XToastUtils;
 import com.xuexiang.xaop.XAOP;
@@ -71,7 +71,7 @@ public final class XBasicLibInit {
      */
     private static void initXUtil(Application application) {
         XUtil.init(application);
-        XUtil.debug(MyApp.isDebug());
+        XUtil.debug(App.isDebug());
     }
 
     /**
@@ -79,7 +79,7 @@ public final class XBasicLibInit {
      */
     private static void initXPage(Application application) {
         PageConfig.getInstance()
-                .debug(MyApp.isDebug() ? "PageLog" : null)
+                .debug(App.isDebug() ? "PageLog" : null)
                 .setContainActivityClazz(BaseActivity.class)
                 .init(application);
     }
@@ -89,7 +89,7 @@ public final class XBasicLibInit {
      */
     private static void initXAOP(Application application) {
         XAOP.init(application);
-        XAOP.debug(MyApp.isDebug());
+        XAOP.debug(App.isDebug());
         //设置动态申请权限切片 申请权限被拒绝的事件响应监听
         XAOP.setOnPermissionDeniedListener(permissionsDenied -> XToastUtils.error("权限申请被拒绝:" + StringUtils.listToString(permissionsDenied, ",")));
     }
@@ -99,7 +99,7 @@ public final class XBasicLibInit {
      */
     private static void initXUI(Application application) {
         XUI.init(application);
-        XUI.debug(MyApp.isDebug());
+        XUI.debug(App.isDebug());
     }
 
     /**
@@ -107,7 +107,7 @@ public final class XBasicLibInit {
      */
     private static void initRouter(Application application) {
         // 这两行必须写在init之前，否则这些配置在init过程中将无效
-        if (MyApp.isDebug()) {
+        if (App.isDebug()) {
             XRouter.openLog();     // 打印日志
             XRouter.openDebug();   // 开启调试模式(如果在InstantRun模式下运行，必须开启调试模式！线上版本需要关闭,否则有安全风险)
         }
@@ -121,7 +121,7 @@ public final class XBasicLibInit {
         //初始化网络请求框架，必须首先执行
         XHttpSDK.init(application);
         //需要调试的时候执行
-        if (MyApp.isDebug()) {
+        if (App.isDebug()) {
             XHttpSDK.debug();
         }
         //设置网络请求的全局基础地址

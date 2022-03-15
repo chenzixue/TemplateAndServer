@@ -1,6 +1,8 @@
 apply plugin: 'com.android.application'
 apply plugin: 'img-optimizer'
 apply plugin: 'com.yanzhenjie.andserver'
+apply plugin: 'org.greenrobot.greendao'
+
 //打包时，记得设置true启用
 if (isNeedPackage.toBoolean() && isUseBooster.toBoolean()) {
     apply plugin: 'com.didiglobal.booster'
@@ -85,6 +87,10 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
+    greendao{
+        schemaVersion 1 //数据库版本号
+    }
 }
 
 dependencies {
@@ -100,14 +106,19 @@ dependencies {
 
     implementation 'org.apache.commons:commons-lang3:3.11'
     implementation 'org.apache.commons:commons-collections4:4.4'
-    implementation 'io.jsonwebtoken:jjwt:0.9.0'
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
-    //数据库
-    implementation 'com.github.xuexiangjys.XOrmlite:xormlite-runtime:1.0.2'
-    annotationProcessor 'com.github.xuexiangjys.XOrmlite:xormlite-compiler:1.0.2'
+
+    //数据库 greendao
+    implementation 'org.greenrobot:greendao:3.3.0'
+
+
     implementation 'com.github.xuexiangjys:rxutil2:1.2.1'
+
     implementation deps.androidx.recyclerview
+
+    //下拉刷新
     implementation 'com.github.xuexiangjys.SmartRefreshLayout:refresh-layout:1.1.5'
+
     implementation deps.androidx.multidex
     //屏幕适配AutoSize
     implementation 'me.jessyan:autosize:1.1.2'

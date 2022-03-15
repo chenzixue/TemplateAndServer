@@ -17,15 +17,17 @@
 
 package com.xuexiang.templateandserver.fragment.manage;
 
+import static android.app.Activity.RESULT_OK;
+
 import android.view.View;
 
 import com.xuexiang.server.model.User;
+import com.xuexiang.server.model.UserDao;
+import com.xuexiang.templateandserver.App;
 import com.xuexiang.templateandserver.R;
 import com.xuexiang.templateandserver.core.BaseFragment;
 import com.xuexiang.templateandserver.utils.XToastUtils;
 import com.xuexiang.xaop.annotation.SingleClick;
-import com.xuexiang.xormlite.AndServerDataBaseRepository;
-import com.xuexiang.xormlite.db.DBService;
 import com.xuexiang.xpage.annotation.Page;
 import com.xuexiang.xrouter.annotation.AutoWired;
 import com.xuexiang.xrouter.launcher.XRouter;
@@ -34,11 +36,7 @@ import com.xuexiang.xui.widget.edittext.materialedittext.MaterialEditText;
 import com.xuexiang.xui.widget.spinner.materialspinner.MaterialSpinner;
 import com.xuexiang.xutil.common.StringUtils;
 
-import java.sql.SQLException;
-
 import butterknife.BindView;
-
-import static android.app.Activity.RESULT_OK;
 
 /**
  * @author xuexiang
@@ -124,12 +122,8 @@ public class EditUserFragment extends BaseFragment {
     }
 
     public boolean saveUser(User user) {
-        DBService<User> dbService = AndServerDataBaseRepository.getInstance().getDataBase(User.class);
-        try {
-            return dbService.updateData(user) > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
+        UserDao userDao = App.getDaoSession().getUserDao();
+        userDao.update(user);
+        return true;
     }
 }

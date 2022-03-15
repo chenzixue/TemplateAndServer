@@ -18,9 +18,9 @@
 package com.xuexiang.server.service.impl;
 
 import com.xuexiang.server.model.User;
+import com.xuexiang.server.model.UserDao;
 import com.xuexiang.server.service.UserService;
-import com.xuexiang.xormlite.AndServerDataBaseRepository;
-import com.xuexiang.xormlite.db.DBService;
+import com.xuexiang.templateandserver.App;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -32,45 +32,54 @@ import java.util.List;
  * @since 2020/8/31 12:42 AM
  */
 public class UserServiceImpl implements UserService {
+    private final UserDao userDao;
 
-    private DBService<User> mService;
 
     public UserServiceImpl() {
-        mService = AndServerDataBaseRepository.getInstance().getDataBase(User.class);
+        userDao = App.getDaoSession().getUserDao();
     }
 
     @Override
-    public boolean addUser(User user) throws SQLException {
-        return mService.insert(user) > 0;
+    public boolean addUser(User user) {
+        userDao.insert(user);
+        return true;
     }
 
     @Override
-    public boolean deleteUser(int userId) throws SQLException {
-        return mService.deleteById(userId) > 0;
+    public boolean deleteUser(Long userId){
+        userDao.deleteByKey(userId);
+        return true;
     }
 
     @Override
-    public boolean updateUser(User record) throws SQLException {
-        return mService.updateData(record) > 0;
+    public boolean updateUser(User record) {
+        userDao.update(record);
+        return true;
     }
 
     @Override
     public List<User> findAllUser(int pageNum, int pageSize) throws SQLException {
-        return mService.queryPage(pageNum, pageSize, User.KEY_ID, true);
+        int offset = (pageNum - 1) * pageSize;
+        return userDao.queryBuilder().offset(offset).limit(pageSize).list();
     }
 
     @Override
     public List<User> findAllUser() throws SQLException {
-        return mService.queryAll();
+        return userDao.loadAll();
     }
 
     @Override
     public User findUserByAccount(String loginName) throws SQLException {
-        return mService.queryForColumnFirst(User.KEY_LOGIN_NAME, loginName);
+        return userDao.queryBuilder()
+                .where(UserDao.Properties.LoginName.eq(loginName))
+                .unique();
+
     }
 
     @Override
     public User login(String loginName, String password) throws SQLException {
-        return mService.queryForColumnFirst(User.KEY_LOGIN_NAME, loginName, User.KEY_PASSWORD, password);
+        return userDao.queryBuilder()
+                .where(UserDao.Properties.LoginName.eq(loginName), UserDao.Properties.Password.eq(password))
+                .unique();
     }
 }

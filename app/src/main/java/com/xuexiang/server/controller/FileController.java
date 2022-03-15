@@ -17,15 +17,8 @@
 
 package com.xuexiang.server.controller;
 
-import com.xuexiang.server.utils.StorageUtils;
-import com.yanzhenjie.andserver.annotation.PostMapping;
 import com.yanzhenjie.andserver.annotation.RequestMapping;
-import com.yanzhenjie.andserver.annotation.RequestParam;
 import com.yanzhenjie.andserver.annotation.RestController;
-import com.yanzhenjie.andserver.http.multipart.MultipartFile;
-
-import java.io.File;
-import java.io.IOException;
 
 /**
  * @author xuexiang
@@ -35,12 +28,12 @@ import java.io.IOException;
 @RequestMapping(path = "/file")
 public class FileController {
 
-    @PostMapping(path = "/upload")
-    String upload(@RequestParam(name = "file") MultipartFile file, @RequestParam(name = "type") String type) throws IOException {
-        File localFile = StorageUtils.createRandomFile(file, type);
-        file.transferTo(localFile);
-        return StorageUtils.getServerSaveFile(localFile);
-    }
+//    @PostMapping(path = "/upload")
+//    String upload(@RequestParam(name = "file") MultipartFile file, @RequestParam(name = "type") String type) throws IOException {
+//        File localFile = StorageUtils.createRandomFile(file, type);
+//        file.transferTo(localFile);
+//        return StorageUtils.getServerSaveFile(localFile);
+//    }
 
 
 }

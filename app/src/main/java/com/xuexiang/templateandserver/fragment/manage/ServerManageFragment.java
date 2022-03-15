@@ -17,6 +17,8 @@
 
 package com.xuexiang.templateandserver.fragment.manage;
 
+import static android.app.Activity.RESULT_OK;
+
 import android.content.Intent;
 import android.view.View;
 
@@ -24,24 +26,21 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.xuexiang.server.model.User;
+import com.xuexiang.server.model.UserDao;
+import com.xuexiang.templateandserver.App;
 import com.xuexiang.templateandserver.R;
 import com.xuexiang.templateandserver.adapter.UserManageAdapter;
 import com.xuexiang.templateandserver.core.BaseFragment;
 import com.xuexiang.xaop.annotation.SingleClick;
-import com.xuexiang.xormlite.AndServerDataBaseRepository;
-import com.xuexiang.xormlite.db.DBService;
 import com.xuexiang.xpage.annotation.Page;
 import com.xuexiang.xui.utils.WidgetUtils;
 import com.xuexiang.xui.widget.actionbar.TitleBar;
 import com.xuexiang.xui.widget.dialog.materialdialog.MaterialDialog;
 import com.xuexiang.xutil.common.CollectionUtils;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import butterknife.BindView;
-
-import static android.app.Activity.RESULT_OK;
 
 /**
  * @author xuexiang
@@ -58,7 +57,6 @@ public class ServerManageFragment extends BaseFragment {
     @BindView(R.id.refreshLayout)
     SmartRefreshLayout refreshLayout;
 
-    private DBService<User> mDBService;
     private UserManageAdapter mAdapter;
 
     private int mPageIndex = 0;
@@ -83,7 +81,6 @@ public class ServerManageFragment extends BaseFragment {
 
     @Override
     protected void initArgs() {
-        mDBService = AndServerDataBaseRepository.getInstance().getDataBase(User.class);
     }
 
     @Override
@@ -137,14 +134,6 @@ public class ServerManageFragment extends BaseFragment {
     }
 
     private void deleteUser(User item) {
-        try {
-            boolean result = mDBService.deleteData(item) > 0;
-            if (result) {
-                autoRefresh();
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 
     private void autoRefresh() {
@@ -168,12 +157,9 @@ public class ServerManageFragment extends BaseFragment {
      * @return
      */
     private List<User> pageQuery(int pageIndex) {
-        try {
-            return mDBService.queryPage(pageIndex, 10, "Id", true);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
+
+        UserDao userDao = App.getDaoSession().getUserDao();
+        return userDao.queryBuilder().offset(pageIndex).limit(10).list();
     }
 
 }

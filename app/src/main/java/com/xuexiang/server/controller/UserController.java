@@ -17,13 +17,14 @@
 
 package com.xuexiang.server.controller;
 
+import static com.xuexiang.server.api.base.ApiException.ERROR.COMMON_BUSINESS_ERROR;
+
 import com.xuexiang.server.api.base.ApiException;
 import com.xuexiang.server.api.request.PageQuery;
 import com.xuexiang.server.api.response.LoginInfo;
 import com.xuexiang.server.model.User;
 import com.xuexiang.server.service.UserService;
 import com.xuexiang.server.service.impl.UserServiceImpl;
-import com.xuexiang.server.utils.TokenUtils;
 import com.yanzhenjie.andserver.annotation.PostMapping;
 import com.yanzhenjie.andserver.annotation.RequestBody;
 import com.yanzhenjie.andserver.annotation.RequestMapping;
@@ -31,8 +32,6 @@ import com.yanzhenjie.andserver.annotation.RequestParam;
 import com.yanzhenjie.andserver.annotation.RestController;
 
 import java.util.List;
-
-import static com.xuexiang.server.api.base.ApiException.ERROR.COMMON_BUSINESS_ERROR;
 
 /**
  * 用户服务
@@ -113,7 +112,7 @@ public class UserController {
      */
     @PostMapping(path = "/deleteUser")
     boolean deleteUser(@RequestBody User user) throws Exception {
-        return getUserService().deleteUser((int) user.getId());
+        return getUserService().deleteUser(user.getId());
     }
 
     /**
@@ -156,8 +155,7 @@ public class UserController {
 
         if (user != null) {
             return new LoginInfo()
-                    .setUser(user)
-                    .setToken(TokenUtils.createJwtToken(user.getLoginName()));
+                    .setUser(user);
         } else {
             throw new ApiException("用户名或密码错误！", COMMON_BUSINESS_ERROR);
         }

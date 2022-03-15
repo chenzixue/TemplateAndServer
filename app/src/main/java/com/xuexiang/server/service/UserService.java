@@ -47,7 +47,7 @@ public interface UserService {
      * @return 是否成功
      * @throws SQLException 数据库执行报错
      */
-    boolean deleteUser(int userId) throws SQLException;
+    boolean deleteUser(Long userId) throws SQLException;
 
     /**
      * 更新用户

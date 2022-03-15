@@ -19,19 +19,23 @@ package com.xuexiang.templateandserver;
 
 import android.app.Application;
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 
 import androidx.multidex.MultiDex;
 
+import com.xuexiang.server.model.DaoMaster;
+import com.xuexiang.server.model.DaoSession;
 import com.xuexiang.templateandserver.utils.sdkinit.XBasicLibInit;
-import com.xuexiang.xormlite.annotation.DataBase;
-import com.xuexiang.xormlite.enums.DataBaseType;
+
+import org.greenrobot.greendao.query.QueryBuilder;
 
 /**
  * @author xuexiang
  * @since 2018/11/7 下午1:12
  */
-@DataBase(name = "AndServer", type = DataBaseType.EXTERNAL, path = "/storage/emulated/0/AndServer/databases")
-public class MyApp extends Application {
+public class App extends Application {
+
+    public static DaoSession mSession;
 
     @Override
     protected void attachBaseContext(Context base) {
@@ -44,6 +48,24 @@ public class MyApp extends Application {
     public void onCreate() {
         super.onCreate();
         initLibs();
+        initDatabase();
+    }
+
+    /**
+     * 初始化数据库
+     */
+    private void initDatabase() {
+
+        QueryBuilder.LOG_SQL = isDebug();
+        QueryBuilder.LOG_VALUES = isDebug();
+
+        // 1、获取需要连接的数据库
+        DaoMaster.DevOpenHelper devOpenHelper = new DaoMaster.DevOpenHelper(this, "app.db");
+        SQLiteDatabase db = devOpenHelper.getWritableDatabase();
+        // 2、创建数据库连接
+        DaoMaster daoMaster = new DaoMaster(db);
+        // 3、创建数据库会话
+        mSession = daoMaster.newSession();
     }
 
     /**
@@ -59,6 +81,11 @@ public class MyApp extends Application {
      */
     public static boolean isDebug() {
         return BuildConfig.DEBUG;
+    }
+
+    // 供外接使用
+    public static DaoSession getDaoSession() {
+        return mSession;
     }
 
 

@@ -7,7 +7,7 @@
     <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" />
 
     <application
-        android:name=".MyApp"
+        android:name=".App"
         android:allowBackup="false"
         android:configChanges="screenSize|keyboardHidden|orientation|keyboard"
         android:icon="@mipmap/ic_launcher"
